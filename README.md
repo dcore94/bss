@@ -15,7 +15,7 @@ So what were the requirements when I started writing BSS?
 
 There are a set of organizational requirements first.
 
-* **Really** small footprint. Currently the code of the JS library is mucch less the 6K in bytes while the minified version should come around 2.7K.
+* **Really** small footprint. Currently the code of the JS library is sized around 6K in bytes while the minified version should come around 3K.
 * Just do one thing. BSS is thought and written to do databinding. That is transferring data to UI elements and vice versa. Nothing else.
 * BSS should have **ZERO** external dependencies neither from other libraries nor installation or packaging tools.
 
