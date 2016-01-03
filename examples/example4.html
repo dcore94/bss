@@ -1,0 +1,118 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example 4: Master-detail pattern</title>
+		<script type="text/javascript" src="js/bss-1.0.js"></script>
+		<script type="text/javascript">
+			var persons = [
+				{ firstName : "John", lastName : "Doe", age : 34},
+				{ firstName : "Francis", lastName : "Fyord", age : 55},
+				{ firstName : "Hans", lastName : "Weissmueller", age : 62}
+			]
+		 	var selectedPerson = null
+		 	var isNew = false
+			var bss_list = {
+				template : "#masterlisttemplate",
+				target : "#masterlist",
+				recurse : [
+				    {
+				    	in : function(){ return persons },
+						target : "li",
+						apply: function(e, d, i){ e.value = i},
+						recurse : [
+							{
+								target : "span.name",
+								apply : function (e,d,i){ e.textContent = d.firstName + " " + d.lastName}
+							},
+							{
+								target : "span.age",
+								apply : function (e,d,i){ e.textContent = "Age: " + d.age}
+							}
+						]
+				    }
+				]				
+			}
+			var bss_edit = {
+				template : "#detailedittemplate",
+				target : "#detailedit",
+				in : function(){ return selectedPerson },
+				out: function(){ return selectedPerson },
+				recurse : [
+				    {
+						target : "input#firstnameedit",
+						apply: function(e, d, i){ e.value = d.firstName},
+						commit: function (e, d, i){ d.firstName = e.value}
+				    },
+				    {
+						target : "input#lastnameedit",
+						apply: function(e, d, i){ e.value = d.lastName},
+						commit: function (e, d, i){ d.lastName = e.value}
+				    },
+				    {
+						target : "input#ageedit",
+						apply: function(e, d, i){ e.value = d.age},
+						commit: function (e, d, i){ d.age = e.value}
+				    }
+				]	
+			}
+			function selection(i){
+				isNew = false
+				selectedPerson = persons[i]
+				console.log("selected person :", selectedPerson)
+				BSS.apply(bss_edit)
+			}
+			function saveEdit(){
+				if(!isNew){
+					BSS.commit(bss_edit) 
+					BSS.reapply(bss_list)
+				}else{
+					BSS.commit(bss_edit)
+					persons.push(selectedPerson)
+					BSS.apply(bss_list)
+					isNew = false
+				}
+			}
+			function createNew(){
+				isNew = true
+				selectedPerson = { firstName : "?", lastName : "?", age : 0}
+				BSS.apply(bss_edit)
+			}
+		</script>
+		<template id="masterlisttemplate">
+			<ol id="masterlist" style="list-style:none">
+				<li style="border-bottom:1px solid black;margin-bottom: 4px;cursor:pointer" onclick="selection(this.value)">
+					<span class="name" style="font-weight:bold">XXX YYY</span><br/>
+					<span class="age">00</span>
+				<li>
+			</ol>
+		</template>
+		<template id="detailedittemplate">
+			<div id="detailedit">
+				<label for="firstnameedit">Name:</label>
+				<input id="firstnameedit" value="???"></input>
+				<br/>
+				<label for="lastnameedit">Last Name:</label>
+				<input id="lastnameedit" value="???"></input>
+				<br/>
+				<label for="ageedit">Age:</label>
+				<input id="ageedit" value="???"></input>
+			</div>
+		</template>
+	</head>
+	<body onload="BSS.apply(bss_list)" style="position:absolute;width:100%;height:100%">
+		<div style="position:relative;height:10%;width:100%">
+			<h2>Example 4: Master-detail pattern</h2>
+			<h3>Shows how to use multiple bss to implement a master-detail pattern exploiting the replication feature and the i index passed into the apply edi-function</h3>
+		</div>
+		<div id="mastercontainer" style="width:20%;height:85%;float:left;margin-top:20px;margin-right:2px">
+			<ol id="masterlist">
+			</ol>
+		</div>
+		<div id="detailcontainer" style="width:78%;height:85%;float:left;margin-top:20px;margin-left:2px">
+			<input type="button" value="Save" onclick="saveEdit()"/>
+			<input type="button" value="New" onclick="createNew()"/>
+			<div id="detailedit"></div>
+		</div>
+		<div style="clear:both"></div>
+	</body>
+</html>

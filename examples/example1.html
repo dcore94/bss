@@ -1,0 +1,68 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Example 1: Multi-language use-case</title>
+		<script type="text/javascript" src="js/bss-1.0.js"></script>
+		<script type="text/javascript">
+			var languages = [
+				{ changeLang : "Change to Italian ", firstName : "Name", lastName : "Last name", age : "Age", legend : "Identity attribtues"},
+				{ changeLang : "Cambia in tedesco ", firstName : "Nome", lastName : "Cognome", age : "Età", legend : "Attributi identità"},
+				{ changeLang : "Wechsel auf Englisch ", firstName : "Name", lastName : "Nachname", age : "Alter", legend: "Identität Attribute"}
+			]
+		 	var selectedLanguage = -1
+			var bss_lang = {
+				target : "body",
+				in : function (e, d, i){ selectedLanguage = (selectedLanguage + 1) % languages.length; return languages[selectedLanguage]},
+				recurse : [
+					{
+						target : "#changelang",
+						apply : function (e, d, i) { e.value = d.changeLang}
+					},
+					{
+						target : "form fieldset[name=identity] legend",
+						apply : function (e, d, i) { e.textContent = d.legend}
+					},
+					{
+						target : "form label[for=firstname]",
+						apply : function (e, d, i) { e.innerText = e.textContent = d.firstName}
+					},
+					{
+						target : "form label[for=lastname]",
+						apply : function (e, d, i) { e.innerText = e.textContent = d.lastName}
+					},
+					{
+						target : "form label[for=age]",
+						apply : function (e, d, i) { e.innerText = e.textContent = d.age}
+					},
+				]
+			}
+		</script>
+	</head>
+	<body onload="BSS.apply(bss_lang)" style="position:absolute;width:100%;height:100%">
+		<h2>Example 1: Multi-language use-case</h2>
+		<h3>Shows inline applying of text content for an example multilingual usecase...</h3>
+		<input id="changelang" type="button" value="???" 
+			onclick="BSS.apply(bss_lang)"></input>
+		<hr/>
+		<form>
+			<fieldset name="identity">
+				<legend>???</legend>
+				<label for="firstname">???</label>
+				<input id="firstname"></input>
+				<label for="lastname">???</label>
+				<input id="lastname"></input>
+				<label for="age">???</label>
+				<input id="age"></input>
+			</fieldset>
+		</form>
+		<div style="position:absolute;bottom:10%">
+			<hr/>
+			<a rel="license" href="http://creativecommons.org/licenses/by/4.0/">
+			<img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" />
+		</a><br />
+		<span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">BSS Examples</span> by 
+		<span xmlns:cc="http://creativecommons.org/ns#" property="cc:attributionName">Marco Lettere</span> is licensed under a 
+		<a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
+		</div>
+	</body>
+</html>
