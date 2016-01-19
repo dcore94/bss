@@ -65,7 +65,7 @@ _BSS.prototype.apply = function (bss){
 		if (target == null) {
 			console.error("Target not found", targetStr)
 			return;
-		}		
+		}
 		target.parentNode.replaceChild(newtarget, target)
 	}else{
 		this._apply(bss, bss, document)
@@ -87,30 +87,30 @@ _BSS.prototype._apply = function(bss, rootBss, selectorRoot, dataIn, dataOut, in
 		//console.log("root is", e)
 		if(currentInData instanceof Array){
 			//create replicas and remove originating node
+			//console.log("removing ", e, "replicated into ", replicas)
 			var replicas = []
 			for (var i in currentInData){ replicas.push(e.cloneNode(true)) }
 			var parent = e.parentNode 
 			parent.removeChild(e)
-			//console.log("removing ", e, "replicated into ", replicas)
 			//apply to all replicas
 			for(var repl in replicas){
 				var replica = replicas[repl]
-		        if(bss.apply){
-		        	var binding = new _Binding(replica, currentInData[repl], Number(repl), bss.apply)
-		        	binding.transfer()
-		        	this._bindingCache.addApplyBinding(rootBss, binding)
-		        }
+				if(bss.apply){
+					var binding = new _Binding(replica, currentInData[repl], Number(repl), bss.apply)
+					binding.transfer()
+					this._bindingCache.addApplyBinding(rootBss, binding)
+				}
 				var indexedCurrentOutData = (currentOutData instanceof Array ? currentOutData[repl] : currentOutData)
-		        if(bss.commit){
-		        	var binding = new _Binding(replica, indexedCurrentOutData, Number(repl), bss.commit)
-		        	this._bindingCache.addCommitBinding(rootBss, binding)
-		        } 
-			    parent.appendChild(replica)
-			    if(bss.recurse){
-		      		for(var rec in bss.recurse){
-					   	this._apply(bss.recurse[rec], rootBss, replica, currentInData[repl], indexedCurrentOutData, Number(repl))
-		      		}
-	    		}
+				if(bss.commit){
+					var binding = new _Binding(replica, indexedCurrentOutData, Number(repl), bss.commit)
+					this._bindingCache.addCommitBinding(rootBss, binding)
+				}
+				parent.appendChild(replica)
+				if(bss.recurse){
+					for(var rec in bss.recurse){
+						this._apply(bss.recurse[rec], rootBss, replica, currentInData[repl], indexedCurrentOutData, Number(repl))
+					}
+				}
 			}
 		}else{
 			if(bss.apply){
@@ -120,15 +120,15 @@ _BSS.prototype._apply = function(bss, rootBss, selectorRoot, dataIn, dataOut, in
 				this._bindingCache.addApplyBinding(rootBss, binding)
 			}
 			if(bss.commit){
-		      	var binding = new _Binding(e, currentOutData, currentIndex, bss.commit)
-		      	//console.log("creating commit binding with data: ", currentOutData, binding)
-		      	this._bindingCache.addCommitBinding(rootBss, binding)
+				var binding = new _Binding(e, currentOutData, currentIndex, bss.commit)
+				//console.log("creating commit binding with data: ", currentOutData, binding)
+				this._bindingCache.addCommitBinding(rootBss, binding)
 			}
-	     	if(bss.recurse){
-	     		for(var rec in bss.recurse){
+			if(bss.recurse){
+				for(var rec in bss.recurse){
 					this._apply(bss.recurse[rec],rootBss, e, currentInData, currentOutData, currentIndex)
-	    		}
-	    	}
+				}
+			}
 		}
 	}
 }
