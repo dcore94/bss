@@ -67,7 +67,7 @@ A BSS instance is a recursive JSON object that contains the following fields:
 The following is a commented example for a form based BSS instance. To have an overview of more examples check the #Examples section.
     
     var one_bss = {
-    		id : "_BSS_EXAMPLE_FORM",
+		id : "_BSS_EXAMPLE_FORM",
 		template : "template#T1", //bind to a HTML template element whose contents will be written over the target 
 		target : "form#THEFORM",  //a target form that will be replaced by the template content
 		in : labels,
@@ -109,7 +109,8 @@ See example5.html for a small example.
 	
 	<ul id="thelist">
 		<li>
-			<span></span> <!-- remove the li when clicking on the button labeled x. Remember to reapply the BSS! -->
+			<span></span> 
+			<!-- remove the li when clicking on the button labeled x. Remember to reapply the BSS! -->
 			<input type="button" value="x" onclick="this.parentNode.bss_binding.remove(); BSS.apply(bss_list)"></input>
 		</li>
 	</ul>
