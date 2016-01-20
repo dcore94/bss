@@ -1,7 +1,33 @@
+<!DOCTYPE html>
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 		<title>Example 4: Master-detail pattern</title>
+		<style>
+			.masterrow{
+				border-bottom:1px solid black;
+				margin-bottom: 4px;
+				cursor:pointer;
+			}
+			#mastercontainer{
+				width:20%;
+				height:85%;
+				float:left;
+				margin-top:20px;
+				margin-right:2px;
+			}
+			#detailcontainer{
+				width:78%;
+				height:85%;
+				float:left;
+				margin-top:20px;
+				margin-left:2px;
+			}
+			footer{
+				position:absolute;
+				bottom:10%;
+			}
+		</style>
 		<script type="text/javascript" src="../src/bss-1.1.js"></script>
 		<script type="text/javascript">
 			var persons = [
@@ -13,7 +39,7 @@
 		 	var isNew = false
 			var bss_list = {
 				template : "#masterlisttemplate",
-				target : "#masterlist",
+				target : ".masterlist",
 				recurse : [
 				    {
 				    	in : function(){ return persons },
@@ -34,7 +60,7 @@
 			}
 			var bss_edit = {
 				template : "#detailedittemplate",
-				target : "#detailedit",
+				target : ".detailedit",
 				in : function(){ return selectedPerson },
 				out: function(){ return selectedPerson },
 				recurse : [
@@ -79,49 +105,48 @@
 			}
 		</script>
 		<template id="masterlisttemplate">
-			<ol id="masterlist" style="list-style:none">
-				<li style="border-bottom:1px solid black;margin-bottom: 4px;cursor:pointer" onclick="selection(this.value)">
+			<ol class="masterlist" style="list-style:none">
+				<li class="masterrow" onclick="selection(this.value)">
 					<span class="name" style="font-weight:bold">XXX YYY</span><br/>
 					<span class="age">00</span>
 				<li>
 			</ol>
 		</template>
 		<template id="detailedittemplate">
-			<div id="detailedit">
+			<div class="detailedit">
 				<label for="firstnameedit">Name:</label>
-				<input id="firstnameedit" value="???"></input>
+				<input id="firstnameedit" value="???"/>
 				<br/>
 				<label for="lastnameedit">Last Name:</label>
-				<input id="lastnameedit" value="???"></input>
+				<input id="lastnameedit" value="???"/>
 				<br/>
 				<label for="ageedit">Age:</label>
-				<input id="ageedit" value="???"></input>
+				<input id="ageedit" value="???"/>
 			</div>
 		</template>
 	</head>
-	<body onload="BSS.apply(bss_list)" style="position:absolute;width:100%;height:100%">
-		<div style="position:relative;height:10%;width:100%">
-			<h2>Example 4: Master-detail pattern</h2>
-			<h3>Shows how to use multiple bss to implement a master-detail pattern exploiting the replication feature and the i index passed into the apply edi-function</h3>
-		</div>
-		<div id="mastercontainer" style="width:20%;height:85%;float:left;margin-top:20px;margin-right:2px">
-			<ol id="masterlist">
+	<body onload="BSS.apply(bss_list)">
+		<h2>Example 4: Master-detail pattern</h2>
+		<h3>Shows how to use multiple bss to implement a master-detail pattern exploiting the replication feature and the i index passed into the apply edi-function</h3>
+		<hr/>
+		<div id="mastercontainer">
+			<ol class="masterlist">
 			</ol>
 		</div>
-		<div id="detailcontainer" style="width:78%;height:85%;float:left;margin-top:20px;margin-left:2px">
+		<div id="detailcontainer">
 			<input type="button" value="Save" onclick="saveEdit()"/>
 			<input type="button" value="New" onclick="createNew()"/>
-			<div id="detailedit"></div>
+			<div class="detailedit"></div>
 		</div>
 		<div style="clear:both"></div>
-		<div style="position:absolute;bottom:10%">
+		<footer>
 			<hr/>
 			<a rel="license" href="http://creativecommons.org/licenses/by/4.0/">
 				<img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" />
 			</a><br />
-			<span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">BSS Examples</span> by 
-			<span xmlns:cc="http://creativecommons.org/ns#" property="cc:attributionName">Marco Lettere</span> is licensed under a 
+			<span>BSS Examples</span> by 
+			<span>Marco Lettere</span> is licensed under a 
 			<a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
-		</div>
+		</footer>
 	</body>
 </html>
