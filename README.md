@@ -4,7 +4,7 @@ BSS (Binding Style Sheet) is a Javascript library for data-binding and data-driv
 
 ## Version 
 
-1.0
+1.1
 
 ## Disclaimer
 I'm pretty much aware of the fact that there are several possibilities for doing this with other tools and frameworks. Unfortunately I'm an old school software developer and as such I like creating things on my own whenever possible in order to exactly fit my own requirements.
@@ -67,7 +67,7 @@ A BSS instance is a recursive JSON object that contains the following fields:
 The following is a commented example for a form based BSS instance. To have an overview of more examples check the #Examples section.
     
     var one_bss = {
-    		id : "_BSS_EXAMPLE_FORM",
+		id : "_BSS_EXAMPLE_FORM",
 		template : "template#T1", //bind to a HTML template element whose contents will be written over the target 
 		target : "form#THEFORM",  //a target form that will be replaced by the template content
 		in : labels,
@@ -94,6 +94,26 @@ The following methods are the API entry points to the BSS phases.
 * **BSS.reapply(bss)**: if the model does not change structurally, this means only values of already bound data fields have been modified, the light-weight re-application of the BSS instance is much quicker than a complete apply.
 * **BSS.commit(bss)**: runs a commit phase on the passed BSS instance.
 * **BSS.clean(bss)**: clears all cached structures for the passed BSS instnace and zeroes the markup generated inside a target. This is useful for resetting visuals.
+
+With version 1.1 a remove functionality has been added. 
+This functionality comes in very handy in dynamic list based bindings allowing for the removal of replicas when binding to arrays of 
+elements.
+In order to allow for a clean design, this is the only point where BSS has to modify the DOM. 
+A BSS stub object is attached to the HTML element for replicated output bindings. 
+This stub currently contains only the remove operation. Consider _e_ to be the output bound UI element the syntax to access the delete 
+functionality is the following:
+
+	e.bss_binding.delete()
+
+See example5.html for a small example.
+	
+	<ul id="thelist">
+		<li>
+			<span></span> 
+			<!-- remove the li when clicking on the button labeled x. Remember to reapply the BSS! -->
+			<input type="button" value="x" onclick="this.parentNode.bss_binding.remove(); BSS.apply(bss_list)"></input>
+		</li>
+	</ul>
 
 ## Examples
 

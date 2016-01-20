@@ -95,14 +95,14 @@ _BSS.prototype._apply = function(bss, rootBss, selectorRoot, dataIn, dataOut, in
 			//apply to all replicas
 			for(var repl in replicas){
 				var replica = replicas[repl]
-				if(bss.apply){
+				if(true || bss.apply){
 					var binding = new _Binding(replica, currentInData[repl], Number(repl), bss.apply)
 					binding.transfer()
 					this._bindingCache.addApplyBinding(rootBss, binding)
 				}
 				var indexedCurrentOutData = (currentOutData instanceof Array ? currentOutData[repl] : currentOutData)
-				if(bss.commit){
-					var binding = new _Binding(replica, indexedCurrentOutData, Number(repl), bss.commit)
+				if(true || bss.commit){
+					var binding = new _Binding(replica, indexedCurrentOutData, Number(repl), bss.commit, currentOutData)
 					this._bindingCache.addCommitBinding(rootBss, binding)
 				}
 				parent.appendChild(replica)
@@ -113,13 +113,13 @@ _BSS.prototype._apply = function(bss, rootBss, selectorRoot, dataIn, dataOut, in
 				}
 			}
 		}else{
-			if(bss.apply){
+			if(true||bss.apply){
 				var binding = new _Binding(e, currentInData, currentIndex, bss.apply)
 				//console.log("creating apply binding with data: ", binding)
 				binding.transfer()
 				this._bindingCache.addApplyBinding(rootBss, binding)
 			}
-			if(bss.commit){
+			if(true||bss.commit){
 				var binding = new _Binding(e, currentOutData, currentIndex, bss.commit)
 				//console.log("creating commit binding with data: ", currentOutData, binding)
 				this._bindingCache.addCommitBinding(rootBss, binding)
@@ -163,13 +163,21 @@ _BindingCache.prototype.commit = function(bss){
 	}
 };
 
-function _Binding(e, d, i, f){
+function _Binding(e, d, i, f, container){
 	this.element = e
 	this.data = d
 	this.index = i
 	this.fun = f
+	if(container){
+		this.container = container
+		this.element.bss_binding = this
+	}
 }
 
 _Binding.prototype.transfer = function(){
-	this.fun(this.element, this.data, this.index)
+	if(this.fun) this.fun(this.element, this.data, this.index)
+};
+
+_Binding.prototype.remove = function(){
+	this.container.splice(this.index, 1)
 };
