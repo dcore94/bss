@@ -116,7 +116,7 @@ See example5.html for a small example.
 
 ## Examples
 
-In the folder www you'll find some self-contained examples of simple HTML apps that realize few common patterns that should be useful for understanding BSS.
+In the folder _examples_ you'll find some self-contained examples of simple HTML apps that realize few common patterns that should be useful for understanding BSS.
 
 ## Copyright and Licence
 
