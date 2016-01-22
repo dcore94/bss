@@ -18,7 +18,7 @@
 				bottom:10%;
 			}
 		</style>
-		<script type="text/javascript" src="../src/bss-1.1.js"></script>
+		<script type="text/javascript" src="../src/bss-1.2.js"></script>
 		<script type="text/javascript">
 			var languages = [
 				{ changeLang : "Change to Italian ", firstName : "Name", lastName : "Last name", age : "Age", legend : "Identity attribtues"},
@@ -75,7 +75,7 @@
 	</head>
 	<body onload="BSS.apply(bss_lang); BSS.apply(bss_out)">
 		<h1>Example 2: Preparing Json Object for Ajax submission</h1>
-		<p>Shows committing to output model on form submit...</p>
+		<p>Shows committing to output model on form submit. To see the result open the console.</p>
 		<hr/>
 		<input id="changelang" type="button" value="???" onclick="BSS.apply(bss_lang)"/>
 		<form onsubmit="BSS.commit(bss_out), console.log(restQuery); return false;">
