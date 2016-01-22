@@ -4,7 +4,7 @@ BSS (Binding Style Sheet) is a Javascript library for data-binding and data-driv
 
 ## Version 
 
-1.1
+1.2
 
 ## Disclaimer
 I'm pretty much aware of the fact that there are several possibilities for doing this with other tools and frameworks. Unfortunately I'm an old school software developer and as such I like creating things on my own whenever possible in order to exactly fit my own requirements.
