@@ -100,8 +100,7 @@ This functionality comes in very handy in dynamic list based bindings allowing f
 elements.
 In order to allow for a clean design, this is the only point where BSS has to modify the DOM. 
 A BSS stub object is attached to the HTML element for replicated output bindings. 
-This stub currently contains only the remove operation. Consider _e_ to be the output bound UI element the syntax to access the delete 
-functionality is the following:
+This stub currently contains only the remove operation. Consider _e_ to be the output bound UI element then the syntax to access the delete functionality is the following:
 
 	e.bss_binding.delete()
 
