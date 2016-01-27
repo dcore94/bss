@@ -4,7 +4,7 @@ BSS (Binding Style Sheet) is a Javascript library for data-binding and data-driv
 
 ## Version 
 
-1.1
+1.2
 
 ## Disclaimer
 I'm pretty much aware of the fact that there are several possibilities for doing this with other tools and frameworks. Unfortunately I'm an old school software developer and as such I like creating things on my own whenever possible in order to exactly fit my own requirements.
@@ -100,8 +100,7 @@ This functionality comes in very handy in dynamic list based bindings allowing f
 elements.
 In order to allow for a clean design, this is the only point where BSS has to modify the DOM. 
 A BSS stub object is attached to the HTML element for replicated output bindings. 
-This stub currently contains only the remove operation. Consider _e_ to be the output bound UI element the syntax to access the delete 
-functionality is the following:
+This stub currently contains only the remove operation. Consider _e_ to be the output bound UI element then the syntax to access the delete functionality is the following:
 
 	e.bss_binding.delete()
 
@@ -117,7 +116,7 @@ See example5.html for a small example.
 
 ## Examples
 
-In the folder www you'll find some self-contained examples of simple HTML apps that realize few common patterns that should be useful for understanding BSS.
+In the folder _examples_ you'll find some self-contained examples of simple HTML apps that realize few common patterns that should be useful for understanding BSS.
 
 ## Copyright and Licence
 
