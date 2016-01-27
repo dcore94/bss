@@ -44,17 +44,6 @@
 				e.style.top = d.y + "px"; 
 				e.style.left = d.x + "px"
 			}
-			var bss_snow = {
-				template : "#snowtemplate",
-				target : "div.canvas",
-				recurse:[
-					{
-						in : flakes,
-						target : "span",
-						apply : drawFlake
-					}
-				]
-			}
 			function redraw(){ 
 				for(var i=0; i < flakes.length; i++){
 					flakes[i].y = flakes[i].y + flakes[i].distance
@@ -66,6 +55,18 @@
 				setTimeout(redraw, 30)
 			}
 			setTimeout(redraw, 30)
+		</script>
+		<script type="text/javascript">
+			var bss_snow = {
+				template : "#snowtemplate",
+				target : "div.canvas",
+				recurse:
+					{
+						in : flakes,
+						target : "span",
+						apply : drawFlake
+					}
+			}
 		</script>
 		<template id="snowtemplate">
 			<div class="canvas">

@@ -1,6 +1,11 @@
-## Version 1.0
+## Version 1.2
 
-First release.
+* Major
+
+* Minor
+  + Passed from constructors to a slightly more compact JS object notation for BSS classes
+  + Refactored binding code into one single function which is called from both replicated and non replicated bindings
+  + Added check on type for _recurse_ keyword. _recurse_ now accepts also a single _bss_ in addition to arrays of them.
 
 ## Version 1.1
 
@@ -11,3 +16,9 @@ First release.
   + Corrected some indentation issues in the core code.
   + Fixed reference to JS script from inside the examples.
   + Added licence note on examples where missing 
+
+## Version 1.0
+
+First release.
+
+

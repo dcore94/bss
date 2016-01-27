@@ -74,9 +74,15 @@ var BSS = {
 	 * Generates the cache of output bindings to be executed on commit*/
 	_apply : function(bss, rootBss, selectorRoot, dataIn, dataOut, index){
 		var root = selectorRoot.querySelectorAll(this._get(bss.target, null, dataIn, index))
+		
+		//prepare data references for in and out
 		var currentInData = bss['in'] ? this._get(bss['in'], root, dataIn, index) : dataIn
 		var currentOutData = bss['out'] ? this._get(bss['out'], root, dataOut, index) : dataOut
 		var currentIndex = index
+
+		//prepare for possible recursion
+		var recurse = bss.recurse ? (bss.recurse instanceof Array ? bss.recurse : [bss.recurse]) : []
+
 		//console.log("root", root, "bss", bss, "in", bss["in"], "current in data", currentInData)
 		for (var i=0; i < root.length; i++){
 			var e = root.item(i)
@@ -91,32 +97,48 @@ var BSS = {
 				//apply to all replicas
 				for(var repl in replicas){
 					var replica = replicas[repl]
-					var binding = this._bindingCache.newBinding(replica, currentInData[repl], Number(repl), bss.apply)
-					binding.transfer()
-					this._bindingCache.addApplyBinding(rootBss, binding)
 					var indexedCurrentOutData = (currentOutData instanceof Array ? currentOutData[repl] : currentOutData)
-					var binding = this._bindingCache.newBinding(replica, indexedCurrentOutData, Number(repl), bss.commit, currentOutData)
-					this._bindingCache.addCommitBinding(rootBss, binding)
+					this._bind(rootBss, bss, replica, repl, currentInData[repl], indexedCurrentOutData, currentOutData)
+					this._registerEvents(bss, replica)
 					parent.appendChild(replica)
-					if(bss.recurse){
-						for(var rec in bss.recurse){
-							this._apply(bss.recurse[rec], rootBss, replica, currentInData[repl], indexedCurrentOutData, Number(repl))
-						}
+					for(var rec of recurse){
+							this._apply(rec, rootBss, replica, currentInData[repl], indexedCurrentOutData, Number(repl))
 					}
 				}
 			}else{
-				var binding = this._bindingCache.newBinding(e, currentInData, currentIndex, bss.apply)
-				//console.log("creating apply binding with data: ", binding)
-				binding.transfer()
-				this._bindingCache.addApplyBinding(rootBss, binding)
-				var binding = this._bindingCache.newBinding(e, currentOutData, currentIndex, bss.commit)
-				//console.log("creating commit binding with data: ", currentOutData, binding)
-				this._bindingCache.addCommitBinding(rootBss, binding)
-				if(bss.recurse){
-					for(var rec in bss.recurse){
-						this._apply(bss.recurse[rec],rootBss, e, currentInData, currentOutData, currentIndex)
-					}
+				this._bind(rootBss, bss, e, null, currentInData, currentOutData, null)
+				this._registerEvents(bss, e)
+				for(var rec of recurse){
+					this._apply(rec,rootBss, e, currentInData, currentOutData, currentIndex)
 				}
+			}
+		}
+	},
+	
+	_bind : function(rootBss, bss, e, index, inData, outData, outDataContainer){
+		if(inData){
+			var binding = this._bindingCache.newBinding(e, inData, index, bss.apply)
+			binding.transfer()
+			this._bindingCache.addApplyBinding(rootBss, binding)
+		}
+		if(outData){
+			var binding = this._bindingCache.newBinding(e, outData, index, bss.commit, outDataContainer)
+			this._bindingCache.addCommitBinding(rootBss, binding)
+		}
+	},
+	
+	_registerEvents : function(bss, e){
+		for(var k in bss){ 
+			if (k == "on"){
+				var eventMap = bss[k]
+				for(var event in eventMap){
+					var handlers = eventMap[event] instanceof Array ? eventMap[event] : [eventMap[event]]
+					handlers.forEach( function(h){e.addEventListener(event, h, false)} )
+				}
+			}else	if(k.startsWith("on_")){
+				//console.log("Found event ", k)
+				var handlers = bss[k] instanceof Array ? bss[k] : [bss[k]]
+				handlers.forEach( function(h){e.addEventListener(k.substring(3), h, false)} )
 			}
 		}
 	},

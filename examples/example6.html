@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8"/>
+		<title>Example 6: Reusable event maps</title>
+		<style>
+			div#DIVS_CONTAINER{
+				position: absolute;
+				width: 500px;
+				height: 500px;
+				background-color: lightgrey;
+			}
+			div.dnd{
+				background-color: red;
+				position: absolute;
+				width: 50px;
+				height: 50px;
+				box-shadow: black 3px 3px 10px;
+			}
+			div.dragging{
+				opacity: 0.5;
+			}
+			footer{
+				position:absolute;
+				bottom:10%;
+			}
+		</style>
+		<script type="text/javascript" src="../src/bss-1.2.js"></script>
+		<script type="text/javascript">
+			var divs = [ "red", "orange", "blue" ]
+
+			var dragged = null, dx = null, dy = null
+
+			function evlog(ev){ console.log("event:", ev) }
+
+			var draggableEvents = {
+				'dragstart' : [
+					function(ev){ 
+						dragged = this 
+						dx = ev.offsetX 
+						dy = ev.offsetY 
+						dragged.classList.toggle("dragging") 
+					}, 
+					evlog],
+				'dragend' : 
+					function(ev){ 
+						dragged.classList.toggle("dragging") 
+						dragged = dx = dy = null
+					}
+			}
+			var containerEvents = {
+				'dragover' : 
+					function(ev){ 
+						ev.preventDefault|ev.preventDefault() 
+						ev.dataTransfer.dropEffect = 'move'
+					},
+				'drop' : [
+					function(ev){ 
+						ev.stopPropagation|ev.stopPropagation()
+						ev.preventDefault|ev.preventDefault()
+						dragged.style.top = ev.offsetY - dy + "px" 
+						dragged.style.left = ev.offsetX - dx + "px"
+					}, 
+					evlog]
+			}
+			var divs_bss = {
+				template : "#DIVS_TEMPLATE",
+				target : "div#DIVS_CONTAINER",
+				on : containerEvents,
+				recurse : {
+					target : "div.dnd",
+					in : divs,
+					on : draggableEvents,
+					apply: function(e,d,i){ e.style.top = e.style.left = Math.random() * 450 + "px"; e.style.backgroundColor = d }
+				}
+			}
+		</script>
+		<template id="DIVS_TEMPLATE">
+			<div id="DIVS_CONTAINER">
+				<div class="dnd" draggable="true"/>
+			</div>
+		</template>
+	</head>
+	<body onload="BSS.apply(divs_bss)">
+		<h1>Example 6: Reusable event maps</h1>
+		<p>Shows how to provide complex event mappings in a reusable way by writing event maps and hooking them up to the <em><b>on</b></em> keyword</p>
+		<hr/>
+		<div id="DIVS_CONTAINER">
+		</div>
+		<footer>
+			<a rel="license" href="http://creativecommons.org/licenses/by/4.0/">
+				<img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" />
+			</a><br />
+			<span>BSS Examples</span> by 
+			<span>Marco Lettere</span> is licensed under a 
+			<a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
+		</footer>
+	</body>
+</html>
