@@ -101,15 +101,15 @@ var BSS = {
 					this._bind(rootBss, bss, replica, repl, currentInData[repl], indexedCurrentOutData, currentOutData)
 					this._registerEvents(bss, replica)
 					parent.appendChild(replica)
-					for(var rec of recurse){
-							this._apply(rec, rootBss, replica, currentInData[repl], indexedCurrentOutData, Number(repl))
+					for(var rec in recurse){
+							this._apply(recurse[rec], rootBss, replica, currentInData[repl], indexedCurrentOutData, Number(repl))
 					}
 				}
 			}else{
 				this._bind(rootBss, bss, e, null, currentInData, currentOutData, null)
 				this._registerEvents(bss, e)
-				for(var rec of recurse){
-					this._apply(rec,rootBss, e, currentInData, currentOutData, currentIndex)
+				for(var rec in recurse){
+					this._apply(recurse[rec],rootBss, e, currentInData, currentOutData, currentIndex)
 				}
 			}
 		}

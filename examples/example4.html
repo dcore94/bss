@@ -28,7 +28,7 @@
 				bottom:10%;
 			}
 		</style>
-		<script type="text/javascript" src="../src/bss-1.2.js"></script>
+		<script type="text/javascript" src="../src/bss-min-1.2.js"></script>
 		<script type="text/javascript">
 			var persons = [
 				{ firstName : "John", lastName : "Doe", age : 34},
@@ -37,6 +37,19 @@
 			]
 		 	var selectedPerson = null
 		 	var isNew = false
+			var bss_events = {
+				target : "div#detailcontainer",
+				recurse: [
+					{
+						target : "input[name=save]",
+						on_click: saveEdit
+					},
+					{
+						target : "input[name=new]",
+						on_click: createNew
+					}
+				]
+			}
 			var bss_list = {
 				template : "#masterlisttemplate",
 				target : ".masterlist",
@@ -125,7 +138,7 @@
 			</div>
 		</template>
 	</head>
-	<body onload="BSS.apply(bss_list)">
+	<body>
 		<h1>Example 4: Master-detail pattern</h1>
 		<p>Shows how to use multiple bss to implement a master-detail pattern exploiting the replication feature and the i index passed into the apply edi-function</p>
 		<hr/>
@@ -134,17 +147,22 @@
 			</ol>
 		</div>
 		<div id="detailcontainer">
-			<input type="button" value="Save" onclick="saveEdit()"/>
-			<input type="button" value="New" onclick="createNew()"/>
+			<input type="button" name="save" value="Save"/>
+			<input type="button" name="new" value="New"/>
 			<div class="detailedit"></div>
 		</div>
 		<div style="clear:both"></div>
+		<script type="text/javascript">
+			BSS.apply(bss_list)
+			BSS.apply(bss_events)
+		</script>
+
+		<!-- License -->
 		<footer>
 			<a rel="license" href="http://creativecommons.org/licenses/by/4.0/">
-				<img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" />
-			</a><br />
-			<span>BSS Examples</span> by 
-			<span>Marco Lettere</span> is licensed under a 
+				<img alt="Creative Commons License" src="https://i.creativecommons.org/l/by/4.0/88x31.png" />
+			</a><br/>
+			<span>BSS Examples by Marco Lettere is licensed under a </span>
 			<a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
 		</footer>
 	</body>

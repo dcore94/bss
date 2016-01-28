@@ -1,11 +1,13 @@
 ## Version 1.2
 
 * Major
-
+  + Added Event binding
+	
 * Minor
   + Passed from constructors to a slightly more compact JS object notation for BSS classes
   + Refactored binding code into one single function which is called from both replicated and non replicated bindings
   + Added check on type for _recurse_ keyword. _recurse_ now accepts also a single _bss_ in addition to arrays of them.
+  + Rewritten all the examples (now 6) to exploit the new event binding feature
 
 ## Version 1.1
 

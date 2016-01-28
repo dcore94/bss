@@ -25,43 +25,48 @@
 				bottom:10%;
 			}
 		</style>
-		<script type="text/javascript" src="../src/bss-1.2.js"></script>
+		<script type="text/javascript" src="../src/bss-min-1.2.js"></script>
 		<script type="text/javascript">
 			var divs = [ "red", "orange", "blue" ]
-
-			var dragged = null, dx = null, dy = null
-
-			function evlog(ev){ console.log("event:", ev) }
-
-			var draggableEvents = {
-				'dragstart' : [
-					function(ev){ 
-						dragged = this 
-						dx = ev.offsetX 
-						dy = ev.offsetY 
-						dragged.classList.toggle("dragging") 
-					}, 
-					evlog],
-				'dragend' : 
-					function(ev){ 
-						dragged.classList.toggle("dragging") 
-						dragged = dx = dy = null
-					}
+			var dragging = null, zIndex = 0
+			function evlog(ev){ 
+				console.log("event:", ev.type) 
 			}
+			function drag(ev){
+				ev.preventDefault(true)
+				if(!dragging) return
+				var x = (ev['movementX'] ? ev.movementX : ( ev['mozMovementX'] ? ev['mozMovementX'] : 0))
+				var y = (ev['movementY'] ? ev.movementY : ( ev['mozMovementY'] ? ev['mozMovementY'] : 0))
+				var destx = Math.min(Math.max(dragging.offsetLeft + x, 0), 450)
+				var desty = Math.min(Math.max(dragging.offsetTop + y, 0), 450)
+				dragging.style.left = destx + "px"
+				dragging.style.top = desty + "px"
+			}
+			function startDrag(ev){
+				ev.preventDefault(true)
+				dragging = ev.target
+				dx = ev.offsetX 
+				dy = ev.offsetY 
+				dragging.classList.add("dragging")
+				zIndex += 1
+				dragging.style.zIndex = zIndex
+			}
+			function stopDrag(ev){
+				ev.preventDefault(true)
+				if(!dragging) return
+				dragging.classList.remove("dragging") 
+				dragging = null
+			}
+			
+			var draggableEvents = {
+				'mousedown' : [evlog, startDrag],
+				'mouseup' : [evlog, stopDrag],
+				'mousemove': drag,
+				'mouseout' : [evlog, stopDrag]
+			}
+			
 			var containerEvents = {
-				'dragover' : 
-					function(ev){ 
-						ev.preventDefault|ev.preventDefault() 
-						ev.dataTransfer.dropEffect = 'move'
-					},
-				'drop' : [
-					function(ev){ 
-						ev.stopPropagation|ev.stopPropagation()
-						ev.preventDefault|ev.preventDefault()
-						dragged.style.top = ev.offsetY - dy + "px" 
-						dragged.style.left = ev.offsetX - dx + "px"
-					}, 
-					evlog]
+				'mouseout' : [evlog, stopDrag]
 			}
 			var divs_bss = {
 				template : "#DIVS_TEMPLATE",
@@ -77,22 +82,26 @@
 		</script>
 		<template id="DIVS_TEMPLATE">
 			<div id="DIVS_CONTAINER">
-				<div class="dnd" draggable="true"/>
+				<div class="dnd"></div>
 			</div>
 		</template>
 	</head>
-	<body onload="BSS.apply(divs_bss)">
+	<body>
 		<h1>Example 6: Reusable event maps</h1>
-		<p>Shows how to provide complex event mappings in a reusable way by writing event maps and hooking them up to the <em><b>on</b></em> keyword</p>
+		<p>Shows how to provide complex event mappings (with possibly multiple handlers for events) in a reusable way by writing event maps and hooking them up to the <em><b>on</b></em> keyword</p>
 		<hr/>
 		<div id="DIVS_CONTAINER">
 		</div>
+		<script type="text/javascript">
+			BSS.apply(divs_bss)
+		</script>
+		
+		<!-- License -->
 		<footer>
 			<a rel="license" href="http://creativecommons.org/licenses/by/4.0/">
-				<img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" />
-			</a><br />
-			<span>BSS Examples</span> by 
-			<span>Marco Lettere</span> is licensed under a 
+				<img alt="Creative Commons License" src="https://i.creativecommons.org/l/by/4.0/88x31.png" />
+			</a><br/>
+			<span>BSS Examples by Marco Lettere is licensed under a </span>
 			<a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
 		</footer>
 	</body>
