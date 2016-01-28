@@ -21,7 +21,7 @@ There are a set of organizational requirements first.
 * Just accomplish one mission. BSS is thought and written to do data-binding: transferring data to UI elements and vice versa. Nothing else.
 * BSS should have **ZERO** external dependencies neither to libraries nor installation or packaging tools.
 
-Starting with version 1.2 the missions to be accomplished are two. Even-binding has been added. That is externalized and declaratively adding of event handlers to selected DOM elements.
+Starting with version 1.2 the missions to be accomplished are two. Event-binding has been added. That is externalized and declaratively adding of event handlers to selected DOM elements.
 
 Some more functional requirements focus on granting the maximum freedom to BSS users. Everything, in terms of application structure, is up to the developers.
 
@@ -66,11 +66,11 @@ A BSS instance is a recursive JSON object that contains the following fields:
 * **out** : a reference to a Javascript object or array that serves as output model.
 * **apply**: the transfer function to be applied during the apply phase for the current binding.
 * **commit**: the transfer function to be applied during the commit phase for the current binding.
-* **recurse**: a recursive evaluation of CSS3 selectors is applied to the current target in order to navigate down the DOM structure. When descending the DOM structure with recurse, the models bound by the _in_ and _out_ fields are inherited.
+* **recurse**: a sub-bss (or an array of these) that causes a recursive evaluation of CSS3 selectors to the current target in order to navigate down the DOM structure. When descending the DOM structure with recurse, the models bound by the _in_ and _out_ fields are inherited.
 
 New with version 1.2:
-* **on_{event}_** : bind an event handler for the event named _{event}_ in the DOM (for instance click, load, input, ...) to the selected target. The assigned value may be a function an object implementing EventListener or an array of these. 
-* **on** : bind all the events contained in an eventMap. This is useful for reusing complex eventing patterns accross different elements. The event map is a JSON object like {_event1_: handler, _event2_ : handler, ...} where _event_ is the name of a DOM event and handler may be a function, object implementing EventListner or an array of these. 
+* **on_{event}** : bind an event handler for the event named _{event}_ in the DOM (for instance click, load, input, ...) to the selected target. The assigned value may be a function an object implementing EventListener or an array of these. 
+* **on** : bind all the events contained in an eventMap. This is useful for reusing complex eventing patterns accross different elements. The event map is a JSON object like {_event1_: handler, _event2_ : handler, ...} where _event_ is the name of a DOM event and handler may be a function, object implementing EventListener or an array of these. 
 
 The following is a commented example for a form based BSS instance. To have an overview of more examples check the #Examples section.
     
@@ -82,18 +82,18 @@ The following is a commented example for a form based BSS instance. To have an o
 		out : restQuery,   //a JS object to fill in with the form values when committing
 		recurse : [
 			{
-			target : "label[for=FIRSTNAME]",  //select label that refers to form input for First name.
-			apply : function (e, d, i){ e.innerText = e.textContent = d.firstNameLabel} // set the label with data stored in a JS object
+				target : "label[for=FIRSTNAME]",  //select label that refers to form input for First name.
+			 	apply : function (e, d, i){ e.innerText = e.textContent = d.firstNameLabel} // set the label with data stored in a JS object
 			},
 			{
-			target : "input#FIRSTNAME",  //recursively select the descendant input field with id FIRSTNAME.
-			commit : function (e, d, i){ d.firstName = e.value} // set the field firstName of the output data object to the input's value
-			on_input: function(evt){ console.log("Changed", this.value) }
+				target : "input#FIRSTNAME",  //recursively select the descendant input field with id FIRSTNAME.
+				commit : function (e, d, i){ d.firstName = e.value} // set the field firstName of the output data object to the input's value
+				on_input: function(evt){ console.log("Changed", this.value) }
 			}
 		]
 	}
 
-Besides _apply_ and _commit_, which must be _edi-functions_, actually every field of a BSS instance is allowed to be evaluated with an _edi-function_. The _edi-function_ must return a value corresponding to the data-type of the field. 
+Besides _apply_ and _commit_, which must be _edi-functions_, every field of a BSS instance is allowed to be evaluated with an _edi-function_. The _edi-function_ must return a value corresponding to the data-type of the field. 
 
 ## The API
 
