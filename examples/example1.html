@@ -15,7 +15,7 @@
 				bottom:10%;
 			}
 		</style>
-		<script type="text/javascript" src="../src/bss-1.0.js"></script>
+		<script type="text/javascript" src="../src/bss-min-1.2.js"></script>
 		<script type="text/javascript">
 			var languages = [
 				{ changeLang : "Change to Italian ", firstName : "Name", lastName : "Last name", age : "Age", legend : "Identity attribtues"},
@@ -29,7 +29,8 @@
 				recurse : [
 					{
 						target : "#changelang",
-						apply : function (e, d, i) { e.value = d.changeLang}
+						apply : function (e, d, i) { e.value = d.changeLang},
+						on_click : function(ev){ BSS.apply(bss_lang) }
 					},
 					{
 						target : "form fieldset[name=identity] legend",
@@ -51,11 +52,11 @@
 			}
 		</script>
 	</head>
-	<body onload="BSS.apply(bss_lang)">
+	<body>
 		<h1>Example 1: Multi-language use-case</h1>
 		<p>Shows inline applying of text content for an example multilingual usecase...</p>
 		<hr/>
-		<input id="changelang" type="button" value="???" onclick="BSS.apply(bss_lang)"/>
+		<input id="changelang" type="button" value="???"/>
 		<form id="theform">
 			<fieldset name="identity">
 				<legend>???</legend>
@@ -67,12 +68,16 @@
 				<input id="age"/>
 			</fieldset>
 		</form>
+		<script type="text/javascript">
+			BSS.apply(bss_lang)
+		</script>
+
+		<!-- License -->
 		<footer>
 			<a rel="license" href="http://creativecommons.org/licenses/by/4.0/">
-				<img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" />
-			</a><br />
-			<span>BSS Examples</span> by 
-			<span>Marco Lettere</span> is licensed under a 
+				<img alt="Creative Commons License" src="https://i.creativecommons.org/l/by/4.0/88x31.png" />
+			</a><br/>
+			<span>BSS Examples by Marco Lettere is licensed under a </span>
 			<a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
 		</footer>
 	</body>

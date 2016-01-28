@@ -1,13 +1,15 @@
 # BSS
 
-BSS (Binding Style Sheet) is a Javascript library for data-binding and data-driven HTML5 applications. The data-binding is realized through a declarative DSL (domain specific language) based on JSON and CSS3 selectors. 
+BSS (Binding Style Sheet) is a Javascript library for data and event - binding in data-driven HTML5 applications. 
+The binding is realized through a declarative DSL (domain specific language) based on JSON and CSS3 selectors. 
 
 ## Version 
 
-1.1
+1.2
 
 ## Disclaimer
-I'm pretty much aware of the fact that there are several possibilities for doing this with other tools and frameworks. Unfortunately I'm an old school software developer and as such I like creating things on my own whenever possible in order to exactly fit my own requirements.
+I'm pretty much aware of the fact that there are several possibilities for doing this with other tools and frameworks. 
+Unfortunately I'm an old school software developer and as such I like creating things on my own whenever possible in order to exactly fit my own requirements.
 
 ## Requirements
 
@@ -19,15 +21,17 @@ There are a set of organizational requirements first.
 * Just accomplish one mission. BSS is thought and written to do data-binding: transferring data to UI elements and vice versa. Nothing else.
 * BSS should have **ZERO** external dependencies neither to libraries nor installation or packaging tools.
 
+Starting with version 1.2 the missions to be accomplished are two. Event-binding has been added. That is externalized and declaratively adding of event handlers to selected DOM elements.
+
 Some more functional requirements focus on granting the maximum freedom to BSS users. Everything, in terms of application structure, is up to the developers.
 
 Here they are:
 
 * BSS should not be limited by browser compatibility in the first place. I use what I need independently of browser support.
 * Try to use "reasonable" possibilities offered by HTML (5). Reasonable means the template tag, the CSS3 selectors and the querySelector interface but not yet the Object.observe interface.
-* Data-binding has to be written as much as possible in a declarative form.
+* Data and event -binding has to be written as much as possible in a declarative form.
 * The binding sheet has to be external to both the model and the view and no programming model has to be enforced. Thus no extra attributes or particular markup structure is needed for data-binding. 
-* No cronological order is enforced with respect to the development of data moidels and UI elements. 
+* No cronological order is enforced with respect to the development of data models and UI elements. 
 * No extra-events have to be raised or handled. 
 * UI elements have to be accessed at the finest grain of their functionality. textContent and value attribute but also style attributes (i. e. position, visibility, colors, sizes ...) may be data bound.
 
@@ -62,7 +66,11 @@ A BSS instance is a recursive JSON object that contains the following fields:
 * **out** : a reference to a Javascript object or array that serves as output model.
 * **apply**: the transfer function to be applied during the apply phase for the current binding.
 * **commit**: the transfer function to be applied during the commit phase for the current binding.
-* **recurse**: a recursive evaluation of CSS3 selectors is applied to the current target in order to navigate down the DOM structure. When descending the DOM structure with recurse, the models bound by the _in_ and _out_ fields are inherited.
+* **recurse**: a sub-bss (or an array of these) that causes a recursive evaluation of CSS3 selectors to the current target in order to navigate down the DOM structure. When descending the DOM structure with recurse, the models bound by the _in_ and _out_ fields are inherited.
+
+New with version 1.2:
+* **on_{event}** : bind an event handler for the event named _{event}_ in the DOM (for instance click, load, input, ...) to the selected target. The assigned value may be a function an object implementing EventListener or an array of these. 
+* **on** : bind all the events contained in an eventMap. This is useful for reusing complex eventing patterns accross different elements. The event map is a JSON object like {_event1_: handler, _event2_ : handler, ...} where _event_ is the name of a DOM event and handler may be a function, object implementing EventListener or an array of these. 
 
 The following is a commented example for a form based BSS instance. To have an overview of more examples check the #Examples section.
     
@@ -74,17 +82,18 @@ The following is a commented example for a form based BSS instance. To have an o
 		out : restQuery,   //a JS object to fill in with the form values when committing
 		recurse : [
 			{
-			target : "label[for=FIRSTNAME]",  //select label that refers to form input for First name.
-			apply : function (e, d, i){ e.innerText = e.textContent = d.firstNameLabel} // set the label with data stored in a JS object
+				target : "label[for=FIRSTNAME]",  //select label that refers to form input for First name.
+			 	apply : function (e, d, i){ e.innerText = e.textContent = d.firstNameLabel} // set the label with data stored in a JS object
 			},
 			{
-			target : "input#FIRSTNAME",  //recursively select the descendant input field with id FIRSTNAME.
-			commit : function (e, d, i){ d.firstName = e.value} // set the field firstName of the output data object to the input's value
+				target : "input#FIRSTNAME",  //recursively select the descendant input field with id FIRSTNAME.
+				commit : function (e, d, i){ d.firstName = e.value} // set the field firstName of the output data object to the input's value
+				on_input: function(evt){ console.log("Changed", this.value) }
 			}
 		]
 	}
 
-Besides _apply_ and _commit_, which must be _edi-functions_, actually every field of a BSS instance is allowed to be evaluated with an _edi-function_. The _edi-function_ must return a value corresponding to the data-type of the field. 
+Besides _apply_ and _commit_, which must be _edi-functions_, every field of a BSS instance is allowed to be evaluated with an _edi-function_. The _edi-function_ must return a value corresponding to the data-type of the field. 
 
 ## The API
 
@@ -100,8 +109,7 @@ This functionality comes in very handy in dynamic list based bindings allowing f
 elements.
 In order to allow for a clean design, this is the only point where BSS has to modify the DOM. 
 A BSS stub object is attached to the HTML element for replicated output bindings. 
-This stub currently contains only the remove operation. Consider _e_ to be the output bound UI element the syntax to access the delete 
-functionality is the following:
+This stub currently contains only the remove operation. Consider _e_ to be the output bound UI element then the syntax to access the delete functionality is the following:
 
 	e.bss_binding.delete()
 
@@ -117,7 +125,7 @@ See example5.html for a small example.
 
 ## Examples
 
-In the folder www you'll find some self-contained examples of simple HTML apps that realize few common patterns that should be useful for understanding BSS.
+In the folder _examples_ you'll find some self-contained examples of simple HTML apps that realize few common patterns that should be useful for understanding BSS.
 
 ## Copyright and Licence
 

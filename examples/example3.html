@@ -22,7 +22,7 @@
 				bottom:10%;
 			}
 		</style>
-		<script type="text/javascript" src="../src/bss-1.1.js"></script>
+		<script type="text/javascript" src="../src/bss-min-1.2.js"></script>
 		<script type="text/javascript">
 			var flakeCount = Math.max(100, (Math.random()* 10)|0)
 			var flakes = new Array(flakeCount)
@@ -44,17 +44,6 @@
 				e.style.top = d.y + "px"; 
 				e.style.left = d.x + "px"
 			}
-			var bss_snow = {
-				template : "#snowtemplate",
-				target : "div.canvas",
-				recurse:[
-					{
-						in : flakes,
-						target : "span",
-						apply : drawFlake
-					}
-				]
-			}
 			function redraw(){ 
 				for(var i=0; i < flakes.length; i++){
 					flakes[i].y = flakes[i].y + flakes[i].distance
@@ -67,24 +56,39 @@
 			}
 			setTimeout(redraw, 30)
 		</script>
+		<script type="text/javascript">
+			var bss_snow = {
+				template : "#snowtemplate",
+				target : "div.canvas",
+				recurse:
+					{
+						in : flakes,
+						target : "span",
+						apply : drawFlake
+					}
+			}
+		</script>
 		<template id="snowtemplate">
 			<div class="canvas">
 				<span class="snowflake">*</span>
 			</div>
 		</template>
 	</head>
-	<body onload="BSS.apply(bss_snow)">
+	<body>
 		<h1>Example 3: Data-driven snow effect</h1>
 		<p>Shows replication and applying to visual attributes...</p>
 		<hr/>
 		<div class="canvas"></div>
-		
+		<script type="text/javascript">
+			BSS.apply(bss_snow)
+		</script>
+
+		<!-- License -->
 		<footer>
 			<a rel="license" href="http://creativecommons.org/licenses/by/4.0/">
-				<img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" />
-			</a><br />
-			<span>BSS Examples</span> by 
-			<span>Marco Lettere</span> is licensed under a 
+				<img alt="Creative Commons License" src="https://i.creativecommons.org/l/by/4.0/88x31.png" />
+			</a><br/>
+			<span>BSS Examples by Marco Lettere is licensed under a </span>
 			<a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
 		</footer>
 	</body>
