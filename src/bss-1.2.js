@@ -135,7 +135,7 @@ var BSS = {
 					var handlers = eventMap[event] instanceof Array ? eventMap[event] : [eventMap[event]]
 					handlers.forEach( function(h){e.addEventListener(event, h, false)} )
 				}
-			}else	if(k.startsWith("on_")){
+			}else	if(k.lastIndexOf("on_") == 0){
 				//console.log("Found event ", k)
 				var handlers = bss[k] instanceof Array ? bss[k] : [bss[k]]
 				handlers.forEach( function(h){e.addEventListener(k.substring(3), h, false)} )
