@@ -1,7 +1,7 @@
 # BSS
 
 BSS (Binding Style Sheet) is a Javascript library for data and event - binding in data-driven HTML5 applications. 
-The data-binding is realized through a declarative DSL (domain specific language) based on JSON and CSS3 selectors. 
+The binding is realized through a declarative DSL (domain specific language) based on JSON and CSS3 selectors. 
 
 ## Version 
 
