@@ -4,6 +4,11 @@
 		<meta charset="UTF-8"/>
 		<title>Example 6: Reusable event maps</title>
 		<style>
+			body{
+				position : absolute;
+				width:100%;
+				height:100%;
+			}
 			div.divs_container{
 				position: absolute;
 				width: 500px;
@@ -30,7 +35,7 @@
 			var divs = [ "red", "orange", "blue" ]
 			var dragging = null, zIndex = 0
 			function evlog(ev){ 
-				console.log("event:", ev.type) 
+				console.log("event:", ev.type, ev.target.tagName, ev.target.name) 
 			}
 			function drag(ev){
 				ev.preventDefault(true)
@@ -59,14 +64,18 @@
 			}
 			
 			var draggableEvents = {
-				'mousedown' : [evlog, startDrag],
-				'mouseup' : [evlog, stopDrag],
-				'mousemove': drag,
-				'mouseout' : [evlog, stopDrag]
+				mousedown : [evlog, startDrag],
+				mouseup : [evlog, stopDrag],
+				mouseout : [evlog, function(ev){ ev.stopPropagation() }]
 			}
 			
 			var containerEvents = {
-				'mouseout' : [evlog, stopDrag]
+				mouseout : [evlog],
+				mousemove : [evlog, drag]
+			}
+			var body_bss = {
+				target : "body",
+				on_mouseup : [evlog, stopDrag]
 			}
 			var divs_bss = {
 				template : "#DIVS_TEMPLATE",
@@ -76,12 +85,12 @@
 					target : "div.dnd",
 					in : divs,
 					on : draggableEvents,
-					apply: function(e,d,i){ e.style.top = e.style.left = Math.random() * 450 + "px"; e.style.backgroundColor = d }
+					apply: function(e,d,i){ e.style.top = e.style.left = Math.random() * 450 + "px"; e.style.backgroundColor = e.name = d }
 				}
 			}
 		</script>
 		<template id="DIVS_TEMPLATE">
-			<div class="divs_container">
+			<div class="divs_container" name="container">
 				<div class="dnd"></div>
 			</div>
 		</template>
@@ -93,7 +102,7 @@
 		<div class="divs_container">
 		</div>
 		<script type="text/javascript">
-			BSS.apply(divs_bss)
+			BSS.apply(divs_bss); BSS.apply(body_bss)
 		</script>
 		
 		<!-- License -->
