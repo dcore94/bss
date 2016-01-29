@@ -4,7 +4,7 @@
 		<meta charset="UTF-8"/>
 		<title>Example 6: Reusable event maps</title>
 		<style>
-			div#DIVS_CONTAINER{
+			div.divs_container{
 				position: absolute;
 				width: 500px;
 				height: 500px;
@@ -70,7 +70,7 @@
 			}
 			var divs_bss = {
 				template : "#DIVS_TEMPLATE",
-				target : "div#DIVS_CONTAINER",
+				target : "div.divs_container",
 				on : containerEvents,
 				recurse : {
 					target : "div.dnd",
@@ -81,7 +81,7 @@
 			}
 		</script>
 		<template id="DIVS_TEMPLATE">
-			<div id="DIVS_CONTAINER">
+			<div class="divs_container">
 				<div class="dnd"></div>
 			</div>
 		</template>
@@ -90,7 +90,7 @@
 		<h1>Example 6: Reusable event maps</h1>
 		<p>Shows how to provide complex event mappings (with possibly multiple handlers for events) in a reusable way by writing event maps and hooking them up to the <em><b>on</b></em> keyword</p>
 		<hr/>
-		<div id="DIVS_CONTAINER">
+		<div class="divs_container">
 		</div>
 		<script type="text/javascript">
 			BSS.apply(divs_bss)
