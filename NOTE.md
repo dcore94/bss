@@ -1,3 +1,8 @@
+## Version 1.2.1
+* Minor
+  + Added an example that demonstrates the injection of BSS structures in order to bind arbitrary nested trtee structures
+  + Fixed library to make even _recurse_ a possible _edi-function_.
+
 ## Version 1.2
 
 * Major

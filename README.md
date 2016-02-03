@@ -5,7 +5,7 @@ The binding is realized through a declarative DSL (domain specific language) bas
 
 ## Version 
 
-1.2
+1.2.1
 
 ## Disclaimer
 I'm pretty much aware of the fact that there are several possibilities for doing this with other tools and frameworks. 
