@@ -185,9 +185,9 @@ var BSS = {
 			}
 			if(container){
 				b.container = container
-				e.bss_binding = b
 				b.remove = function(){ this.container.splice(this.index, 1) }
 			}
+			e.bss_binding = b
 			return b
 		}
 	}
