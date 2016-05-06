@@ -119,7 +119,7 @@ See example5.html for a small example.
 		<li>
 			<span></span> 
 			<!-- remove the li when clicking on the button labeled x. Remember to reapply the BSS! -->
-			<input type="button" value="x" onclick="this.parentNode.bss_binding.remove(); BSS.apply(bss_list)"></input>
+			<input type="button" value="x" onclick="this.parentNode.bss_binding.remove(); BSS.apply(bss_list)"/>
 		</li>
 	</ul>
 
