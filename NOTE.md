@@ -1,3 +1,7 @@
+## Version 1.2.2
+* Major
+  + Added polyfill for template tags supporting older browsers and IE
+  
 ## Version 1.2.1
 * Minor
   + Added an example that demonstrates the injection of BSS structures in order to bind arbitrary nested trtee structures

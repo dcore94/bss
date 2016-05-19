@@ -38,7 +38,7 @@
 				bottom:10%;
 			}
 		</style>
-		<script type="text/javascript" src="../src/bss-min-1.2.1.js"></script>
+		<script type="text/javascript" src="../src/bss-min-1.2.2.js"></script>
 		<script type="text/javascript">
 			var tree_data = {
 				children : [
@@ -193,7 +193,9 @@
 			</ul>
 		</div>
 		<script type="text/javascript">
-			BSS.apply(tree_bss); BSS.apply(tree2_bss);
+			BSS.polyfill() //in order to manage templates in older browsers and IE
+			BSS.apply(tree_bss); 
+			BSS.apply(tree2_bss);
 		</script>
 		
 		<!-- License -->

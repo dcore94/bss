@@ -30,7 +30,7 @@
 				bottom:10%;
 			}
 		</style>
-		<script type="text/javascript" src="../src/bss-min-1.2.js"></script>
+		<script type="text/javascript" src="../src/bss-min-1.2.2.js"></script>
 		<script type="text/javascript">
 			var divs = [ "red", "orange", "blue" ]
 			var dragging = null, zIndex = 0
@@ -102,6 +102,7 @@
 		<div class="divs_container">
 		</div>
 		<script type="text/javascript">
+			BSS.polyfill() //in order to manage templates in older browsers and IE
 			BSS.apply(divs_bss); BSS.apply(body_bss)
 		</script>
 		
