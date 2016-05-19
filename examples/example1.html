@@ -15,7 +15,7 @@
 				bottom:10%;
 			}
 		</style>
-		<script type="text/javascript" src="../src/bss-min-1.2.js"></script>
+		<script type="text/javascript" src="../src/bss-min-1.2.2.js"></script>
 		<script type="text/javascript">
 			var languages = [
 				{ changeLang : "Change to Italian ", firstName : "Name", lastName : "Last name", age : "Age", legend : "Identity attribtues"},
@@ -69,6 +69,7 @@
 			</fieldset>
 		</form>
 		<script type="text/javascript">
+			BSS.polyfill() //in order to manage templates in older browsers and IE
 			BSS.apply(bss_lang)
 		</script>
 
