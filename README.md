@@ -5,7 +5,7 @@ The binding is realized through a declarative DSL (domain specific language) bas
 
 ## Version 
 
-1.2.2
+1.2.3
 
 ## Disclaimer
 I'm pretty much aware of the fact that there are several possibilities for doing this with other tools and frameworks. 
@@ -104,20 +104,26 @@ The following methods are the API entry points to the BSS phases.
 * **BSS.commit(bss)**: runs a commit phase on the passed BSS instance.
 * **BSS.clean(bss)**: clears all cached structures for the passed BSS instnace and zeroes the markup generated inside a target. This is useful for resetting visuals.
 
-In order to allow for a clean design, the only point where BSS has to modify the DOM is when binding an element to a datastructure. A BSS stub object is attached to the HTML element only for **replicated output bindings**.
+In order to allow for a clean design, the only point where BSS has to modify the DOM is when binding an element to a datastructure. A BSS stub object is attached to the HTML element only for both input and output **bindings**.
 
-The stub object is accessible through the code:
+The stub object for input bindings is accessible through the code:
 
-	e.bss_binding //the whole stub
-	e.bss_binding.data // the data object bound to the element
-	e.bss_binding.index //the index if the element is replicated
+	e.bss_input //the whole stub
+	e.bss_input.data // the data object bound to the element
+	e.bss_input.index //the index if the element is replicated
+
+The stub object for output bindings is accessible through the code:
+
+	e.bss_output //the whole stub
+	e.bss_output.data // the data object bound to the element
+	e.bss_output.index //the index if the element is replicated
 
 Other elements of the stub object are currently undocumented and it's recommended not to use them.
 
 With version 1.1 a remove functionality has been added only for **replicated output bindings**. 
 This functionality comes in very handy in dynamic list based bindings allowing for the removal of replicas when binding to arrays of elements. The syntax to access the delete functionality is the following:
 
-	e.bss_binding.delete()
+	e.bss_output.delete()
 
 See example5.html for a small example.
 	
