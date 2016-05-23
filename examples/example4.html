@@ -28,7 +28,7 @@
 				bottom:10%;
 			}
 		</style>
-		<script type="text/javascript" src="../src/bss-min-1.2.2.js"></script>
+		<script type="text/javascript" src="../src/bss-1.2.3.js"></script>
 		<script type="text/javascript">
 			var persons = [
 				{ firstName : "John", lastName : "Doe", age : 34},
@@ -74,8 +74,7 @@
 			var bss_edit = {
 				template : "#detailedittemplate",
 				target : ".detailedit",
-				in : function(){ return selectedPerson },
-				out: function(){ return selectedPerson },
+				inout : function(){ return selectedPerson },
 				recurse : [
 				    {
 						target : "input#firstnameedit",
