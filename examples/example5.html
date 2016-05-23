@@ -17,8 +17,7 @@
 				target : "ul.thelist",
 				recurse : [
 					{
-						in : function(){ return LIST },
-						out : function(){ return LIST },
+						inout : function(){ return LIST },
 						target : "li",
 						apply: function(e, d, i){ e.value = i },
 						recurse : [
