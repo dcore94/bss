@@ -116,7 +116,7 @@ var BSS = {
 			var recurse = bss.recurse ? this._get(bss['recurse'], target, currentData, index) : []
 			var recurse = recurse ? (recurse instanceof Array ? recurse : [recurse]) : []
 			
-			console.log("recurse is",recurse, "currentData", currentData)
+			//console.log("recurse is",recurse, "currentData", currentData)
 			
 			if(currentData instanceof Array){
 				//create replicas and remove originating node
