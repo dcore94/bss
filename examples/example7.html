@@ -26,7 +26,7 @@
 				margin-right: .3em;
 			}
 			li{
-				padding-left : 2em;
+				padding-left : 1em;
 				margin: .3em 0;
 				user-select: none;
 			}
@@ -39,43 +39,52 @@
 				margin-right: .3em;
 			}
 		</style>
-		<template id="TEMPL">
-			<ul name="fakefsview">
-				<span></span>
-				<li><span></span></li>
-				<ul>
-					<span></span>
-					<li><span></span></li>
-				</ul>
-			</ul>			
-		</template>
-	</head>
-	<body>
-		<h1>Example 7: Custom targets and arbitrarily nested structures</h1>
-		<p>Shows new feature of v. 1.2.4 where edi-function can be used to provide custom nodesets for binding instead of relying only on css-selectors. Moreover the example demonstrates how segments of bss can be factored and applied recursively in order to bind to arbitrarily nested structures.</p>
-		<hr/>
-		<ul name="fakefsview"></ul>
 		<script type="text/javascript">
+			//some example data
 			var fakefsdata = {
 				"name" : "/", "type" : "dir",
 				"content" : [
 					{"name" : "tmp", "type" : "dir",
 						"content" :[
 							{"name" : "file1.txt", "type" : "file"},
-							{"name" : "folder1", "type" : "dir", "content" : []}
+							{"name" : "folder1", "type" : "dir", "content" : [
+								{"name" : "anotherfile.txt", "type" : "file"}
+							]}
 						]
 					},
 					{"name" : "opt", "type" : "dir",
 						"content" : [
+							{"name" : "subdir", "type" : "dir", "content" : [] },
 							{"name" : "package.deb", "type" : "file"}
 						]
 					}
 				]
 			}
+		</script>
+		<template id="TEMPL">
+			<ul name="fakefsview">
+				<span></span>
+				<li><span></span></li>
+				<ul></ul>
+			</ul>			
+		</template>
+	</head>
+	<body>
+		<h1>Example 7: Custom targets and arbitrarily nested structures</h1>
+		<p>Shows new feature of v. 1.2.5 where edi-function can be used to provide custom nodesets for binding instead of relying only on css-selectors. Moreover the example demonstrates how segments of bss can be factored and applied recursively in order to bind to arbitrarily nested structures.</p>
+		<hr/>
+		<ul name="fakefsview"></ul>
+		<script type="text/javascript">			
+			function getImmediateChildrenByTagName(e, tag){
+				return Array.prototype.slice.call(e.children).filter(c=>c.nodeName.toLowerCase() === tag)
+			}
+			
 			var recursive_bss = [
 				{
+					//redefine template in order to provide a recursive structure to replicate
+					template : "#TEMPL",
 					//target nodes are only direct ul children which is impossible with css selectors
-					target: e => Array.prototype.slice.call(e.children).filter(c=>c.nodeName.toLowerCase() === "ul"),
+					target: e => getImmediateChildrenByTagName(e, "ul"),
 					in : (e,d,i) => { return d.content.filter(c=>c["type"] === "dir") },
 					apply : (e,d,i) => { e.querySelector("span").textContent = d["name"] },
 					recurse : (e,d,i) => recursive_bss,
@@ -83,12 +92,13 @@
 				},
 				{
 					//target nodes are only direct li children which is impossible with css selectors
-					target: e => { return Array.prototype.slice.call(e.children).filter(c=>c.nodeName.toLowerCase() === "li")}, 
+					target: e => getImmediateChildrenByTagName(e, "li"), 
 					in : (e,d,i) => { return d.content.filter(c=>c["type"] === "file") },
 					apply : (e,d,i) => { e.querySelector("span").textContent = d["name"]}
 				}
 			]
-			fakefs_bss = {
+			
+			var fakefs_bss = {
 				template : "#TEMPL",
 				target : "ul[name=fakefsview]",
 				in: fakefsdata,
@@ -96,6 +106,7 @@
 				recurse : (e, d, i) => recursive_bss,
 				on_click : ev => { ev.target.classList.toggle("closed"); ev.stopPropagation()}
 			}
+			
 			BSS.polyfill() //in order to manage templates in older browsers and IE
 			BSS.apply(fakefs_bss)
 		</script>
