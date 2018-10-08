@@ -5,7 +5,7 @@ The binding is realized through a declarative DSL (domain specific language) bas
 
 ## Version 
 
-1.2.3
+1.2.5
 
 ## Disclaimer
 I'm pretty much aware of the fact that there are several possibilities for doing this with other tools and frameworks. 
@@ -61,14 +61,13 @@ A BSS instance is a recursive JSON object that contains the following fields:
 
 * **id**: an identifier assigned to the root BSS instance. This is optional. The library assigns a random generated id to BSS instances that lack an id.
 * **template**: in the root BSS instance this field is a CSS3 selector that identifies the template containing the prototype markup that will be replaced at the target.
-* **target**: a CSS3 selector resolving to a DOM element where the data-binding will be applied.
+* **target**: a CSS3 selector resolving to a DOM element where the data-binding will be applied. Starting from version 1.2.5, target may be an edi-function returning a custom nodeset of DOM elements. This is useful for returning immediate children with a give tagname for example which is impossible to achieve with CSS selectors.
 * **in** : a reference to a Javascript object or array that serves as input model.
 * **out** : a reference to a Javascript object or array that serves as output model.
 * **apply**: the transfer function to be applied during the apply phase for the current binding.
 * **commit**: the transfer function to be applied during the commit phase for the current binding.
-* **recurse**: a sub-bss (or an array of these) that causes a recursive evaluation of CSS3 selectors to the current target in order to navigate down the DOM structure. When descending the DOM structure with recurse, the models bound by the _in_ and _out_ fields are inherited.
+* **recurse**: a sub-bss (or an array of these) that causes a recursive evaluation of CSS3 selectors to the current target in order to navigate down the DOM structure. When descending the DOM structure with recurse, the models bound by the _in_ and _out_ fields are inherited. Starting with version 1.2.5 recurse is an edi-function which allows for building up dynamically BSS segments. This comes in quite handy when facing arbitarily nested structures (see Example 7).
 
-New with version 1.2:
 * **on_{event}** : bind an event handler for the event named _{event}_ in the DOM (for instance click, load, input, ...) to the selected target. The assigned value may be a function an object implementing EventListener or an array of these. 
 * **on** : bind all the events contained in an eventMap. This is useful for reusing complex eventing patterns accross different elements. The event map is a JSON object like {_event1_: handler, _event2_ : handler, ...} where _event_ is the name of a DOM event and handler may be a function, object implementing EventListener or an array of these. 
 
