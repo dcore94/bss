@@ -19,6 +19,7 @@ There are a set of organizational requirements first.
 
 * **Really** small footprint. Currently the code of the JS library is sized around 6K in bytes while the minified version should come around 3K.
 * Just accomplish one mission. BSS is thought and written to do data-binding: transferring data to UI elements and vice versa. Nothing else.
+* ... well actually no. It also does event handling.
 * BSS should have **ZERO** external dependencies neither to libraries nor installation or packaging tools.
 
 Starting with version 1.2 the missions to be accomplished are two. Event-binding has been added. That is externalized and declaratively adding of event handlers to selected DOM elements.
