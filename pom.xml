@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>dcore94</groupId>
+  <artifactId>bss</artifactId>
+  <version>1.2.5</version>
+  <name>BSS</name>
+  <description>BSS (Binding Style Sheet) is a Javascript library for data and event - binding in data-driven HTML5 applications. The binding is realized through a declarative DSL (domain specific language) based on JSON and CSS3 selectors.</description>
+
+  <packaging>pom</packaging>
+
+  <build>
+    <!-- needed by sonar plugin to find files to analyse -->
+    <sourceDirectory>${sonar.sources}</sourceDirectory>
+  </build>
+  <properties>
+    <!-- properties for sonar -->
+    <sonar.language>js</sonar.language>
+    <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
+    <!-- used in build/properties -->
+    <sonar.sources>${basedir}/src</sonar.sources>
+  </properties>
+</project>
