@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8"/>
+		<title>Example 8: Example with shadow dom and custom components</title>
+		<style>
+			#changelang{
+				margin: 5px;
+			}
+			#theform{
+				margin: 5px;
+			}
+			footer{
+				position:absolute;
+				bottom:10%;
+			}
+		</style>
+		<script type="text/javascript" src="../src/bss-1.2.6.js"></script>
+		<script type="text/javascript">
+			class MyBSSWebComponent extends HTMLElement{
+				
+				#data;
+				#data_bss;
+				#count;
+				
+				constructor(){
+					super()
+					this.initDataAndBSS()
+					this.rootdocument = this.attachShadow({mode: 'open'});
+					this.rootdocument.innerHTML = `
+						<template id="TEST_UL_TEMPLATE">
+							<ul name="test_ul">
+								<li></li>
+							</ul>
+						</template>
+						<p>Here we go with a shadow dom...</p>
+						<button>Bind it</button>
+						<ul name="test_ul"></ul>
+					`
+				}
+				
+				connectedCallback(){
+					this.rootdocument.querySelector("button").addEventListener('click', (ev) => {
+					  this.apply()
+					})
+				}
+				
+				apply(){
+					this.count += 1
+					console.log(this.data)
+					BSS.apply(this.data_bss, this.rootdocument)
+				}
+				
+				initDataAndBSS(){
+					this.count = 0
+					this.data = [ "A list of useless items", "just for testing purposes"]
+					this.data_bss = {
+						target : "ul[name=test_ul]",
+						template : "#TEST_UL_TEMPLATE",
+						"in" : ()=>{ console.log(this, this.count); return { data : this.data} },
+						recurse: {
+							target : "li",
+							"in" : (e, d) => d.data,
+							apply : (e, d)=>e.textContent = (d + " " + this.count)
+						}
+					}
+				}
+				
+			}
+			
+			window.customElements.define("my-bss-component", MyBSSWebComponent)
+		</script>
+	</head>
+	<body>
+		<h1>Example 8: Web component use-case</h1>
+		<p>Shows how to use BSS inside a web component with or without shadow dom (requires v. 1.2.6+)</p>
+		<hr/>
+		
+		<my-bss-component></my-bss-component>
+
+		<!-- License -->
+		<footer>
+			<a rel="license" href="http://creativecommons.org/licenses/by/4.0/">
+				<img alt="Creative Commons License" src="https://i.creativecommons.org/l/by/4.0/88x31.png" />
+			</a><br/>
+			<span>BSS Examples by Marco Lettere is licensed under a </span>
+			<a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
+		</footer>
+	</body>
+</html>
