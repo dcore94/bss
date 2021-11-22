@@ -5,7 +5,7 @@ The binding is realized through a declarative DSL (domain specific language) bas
 
 ## Version 
 
-1.2.5
+1.2.6
 
 ## Disclaimer
 I'm pretty much aware of the fact that there are several possibilities for doing this with other tools and frameworks. 
@@ -63,6 +63,7 @@ A BSS instance is a recursive JSON object that contains the following fields:
 * **id**: an identifier assigned to the root BSS instance. This is optional. The library assigns a random generated id to BSS instances that lack an id.
 * **template**: in the root BSS instance this field is a CSS3 selector that identifies the template containing the prototype markup that will be replaced at the target.
 * **target**: a CSS3 selector resolving to a DOM element where the data-binding will be applied. Starting from version 1.2.5, target may be an edi-function returning a custom nodeset of DOM elements. This is useful for returning immediate children with a give tagname for example which is impossible to achieve with CSS selectors.
+* **roodocument**: added with version 1.2.6 to specify which is the root document to execute querySelectors on. Useful in presence of shadow doms (see example 8).
 * **in** : a reference to a Javascript object or array that serves as input model.
 * **out** : a reference to a Javascript object or array that serves as output model.
 * **apply**: the transfer function to be applied during the apply phase for the current binding.
@@ -99,7 +100,7 @@ Besides _apply_ and _commit_, which must be _edi-functions_, every field of a BS
 
 The following methods are the API entry points to the BSS phases.
 
-* **BSS.apply(bss)**: this runs an apply phase on the BSS instance passed as argument. _application points_ and _commit points_ are cached for quick re-application and commit.
+* **BSS.apply(bss[, rootdocument])**: this runs an apply phase on the BSS instance passed as argument. _application points_ and _commit points_ are cached for quick re-application and commit. An optional rootdocument can be passed in order to override rootdocument specified in the bss itself. Falls back to global document.
 * **BSS.reapply(bss)**: if the model does not change structurally, this means only values of already bound data fields have been modified, the light-weight re-application of the BSS instance is much quicker than a complete apply.
 * **BSS.commit(bss)**: runs a commit phase on the passed BSS instance.
 * **BSS.clean(bss)**: clears all cached structures for the passed BSS instnace and zeroes the markup generated inside a target. This is useful for resetting visuals.
