@@ -22,37 +22,55 @@
 				#data;
 				#data_bss;
 				#count;
+				#template;
+				static total;
 				
 				constructor(){
 					super()
+					
+					this.initTemplate()
 					this.initDataAndBSS()
-					this.rootdocument = this.attachShadow({mode: 'open'});
-					this.rootdocument.innerHTML = `
+				}
+				
+				connectedCallback(){
+					if(this.getAttribute('use-shadow') == 'false'){
+						this.rootdocument = document
+						//No way to select element so attaching event to custom element and checking button's name attribute
+						this.addEventListener("click", ev=>{
+							if(ev.target.getAttribute("name") === "button"){
+								this.apply()
+							}
+						})
+					}else{
+						this.rootdocument = this.attachShadow({mode: 'open'});
+						this.rootdocument.innerHTML = this.template
+						this.rootdocument.querySelector("button").addEventListener('click', (ev) => {
+						  this.apply()
+						})
+					}
+				}
+				
+				apply(){
+					this.count += 1
+					MyBSSWebComponent.total += 1
+					//ovveride rootdocument in apply so that it adapts to correct document which may be the shadow dom
+					BSS.apply(this.data_bss, this.rootdocument)
+				}
+				
+				initTemplate(){
+					this.template= `
 						<template id="TEST_UL_TEMPLATE">
 							<ul name="test_ul">
 								<li></li>
 							</ul>
 						</template>
-						<p>Here we go with a shadow dom...</p>
-						<button>Bind it</button>
+						<button name="button">Bind it</button>
 						<ul name="test_ul"></ul>
 					`
 				}
 				
-				connectedCallback(){
-					this.rootdocument.querySelector("button").addEventListener('click', (ev) => {
-					  this.apply()
-					})
-				}
-				
-				apply(){
-					this.count += 1
-					console.log(this.data)
-					BSS.apply(this.data_bss, this.rootdocument)
-				}
-				
 				initDataAndBSS(){
-					this.count = 0
+					this.count = MyBSSWebComponent.total = 0
 					this.data = [ "A list of useless items", "just for testing purposes"]
 					this.data_bss = {
 						target : "ul[name=test_ul]",
@@ -61,7 +79,7 @@
 						recurse: {
 							target : "li",
 							"in" : (e, d) => d.data,
-							apply : (e, d)=>e.textContent = (d + " " + this.count)
+							apply : (e, d)=>e.textContent = `${d} ${this.count} (${MyBSSWebComponent.total})`
 						}
 					}
 				}
@@ -75,8 +93,21 @@
 		<h1>Example 8: Web component use-case</h1>
 		<p>Shows how to use BSS inside a web component with or without shadow dom (requires v. 1.2.6+)</p>
 		<hr/>
-		
-		<my-bss-component></my-bss-component>
+		<p>Here we go with a shadow dom...</p>
+		<my-bss-component>
+			<p>This will not be visible because it gets replaced by shadow dom</p>
+		</my-bss-component>
+
+		<p>Here we go with a light dom...</p>
+		<my-bss-component use-shadow="false">
+			<template id="TEST_UL_TEMPLATE">
+				<ul name="test_ul">
+					<li></li>
+				</ul>
+			</template>
+			<button name="button">Bind it</button>
+			<ul name="test_ul"></ul>
+		</my-bss-component>
 
 		<!-- License -->
 		<footer>
